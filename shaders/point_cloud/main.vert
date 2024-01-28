@@ -35,14 +35,10 @@ void main(void) {
     vec2 uv = v_texcoord;
 
     v_color = sampleNearest(u_band_rgba, uv, u_resolution);
-
     vec4 data = sampleNearest(u_doubleBuffer0, uv, u_resolution);
 
     v_position.xyz = data.xyz;
-
-    float dist = distance(u_camera, v_position.xyz);
-
-    gl_PointSize = mix( 15.0 / dist, dist * 0.95, dist/u_cameraDistance);
+    gl_PointSize = 1.0;
     gl_PointSize *= data.w;
     
     gl_Position = u_projectionMatrix * u_viewMatrix * v_position;

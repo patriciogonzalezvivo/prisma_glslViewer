@@ -7,10 +7,10 @@ precision highp float;
 uniform sampler2D   u_band_rgba;
 uniform vec2        u_band_rgbaResolution;
 
-uniform sampler2D   u_band_depth_patchfusion;
-uniform vec2        u_band_depth_patchfusionResolution;
-uniform float       u_band_depth_patchfusion_min;
-uniform float       u_band_depth_patchfusion_max;
+uniform sampler2D   u_band_depth_zoedepth;
+uniform vec2        u_band_depth_zoedepthResolution;
+uniform float       u_band_depth_zoedepth_min;
+uniform float       u_band_depth_zoedepth_max;
 
 uniform sampler2D   u_doubleBuffer0;
 
@@ -43,47 +43,19 @@ void main() {
     vec2 st = gl_FragCoord.xy * pixel;
     vec2 uv = v_texcoord;
 
-    vec2 grid = vec2(4.0);
-    float totalCells = grid.x * grid.y;
-    float time = fract(u_time * 0.1) * totalCells;
-
-    vec2 uv1 = uv * grid;
-    vec2 uv1_i = floor(uv1);  // integer
-    vec2 uv1_f = fract(uv1);
-    
-    // 100%
-    vec2 head = vec2(floor(mod(time,grid.x)), grid.y-floor(time/grid.x)-1.0 );
-
-    // Reveil
-    float pct = step(head.y, uv1_i.y-1.0) + step(uv1_i.x, head.x) * step(head.y, uv1_i.y);
-    pct = saturate(pct);
-
 #if defined(DOUBLE_BUFFER_0)
     Ray ray = rayDirection(vec3(0.0, 0.0, 3.0), uv * 2.0 - 1.0, u_band_rgbaResolution, 45.0);
-    float depth = sampleHeatmap(u_band_depth_patchfusion, uv, u_band_depth_patchfusion_min, u_band_depth_patchfusion_max);
+    float depth = sampleHeatmap(u_band_depth_zoedepth, uv, u_band_depth_zoedepth_min, u_band_depth_zoedepth_max);
     color.xyz = rayCast(ray, depth);
 
-    vec2 depth_pixel = 1.0/u_band_depth_patchfusionResolution;
-    color.a = 1.0-edge(u_band_depth_patchfusion, uv, depth_pixel * 5.0);
-
-    vec4 empty = vec4(rayCast(ray, u_band_depth_patchfusion_max * 0.5), 1.0);
-
-
-    color = mix(empty, color, pct);
+    vec2 depth_pixel = 1.0/u_band_depth_zoedepthResolution;
+    color.a = 1.0-edge(u_band_depth_zoedepth, uv, depth_pixel * 5.0);
 
     vec4 prevColor = texture2D(u_doubleBuffer0, uv);
     color = mix(prevColor, color, 0.25);
 
 #else
     color = v_color;
-    
-    vec2 w = pixel * 2.0;
-    color.rgb += (stroke(uv1_f.x, 0.0, w.x, 0.001) + stroke(uv1_f.y, 0.0, w.y, 0.001)) * stroke(pct, 0.1, 1.0);
-
-    if (head == uv1_i) {
-        color.rgb = texture2D(u_band_depth_patchfusion, uv).rgb * (0.5 + luma(v_color.rgb));
-
-    }
 
 #endif
 
