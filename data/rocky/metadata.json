@@ -1,0 +1,103 @@
+{
+    "bands": {
+        "rgba": {
+            "url": "rgba.mp4"
+        },
+        "depth_midas": {
+            "url": "depth_midas.mp4",
+            "folder": "depth_midas",
+            "values": {
+                "min": {
+                    "type": "float",
+                    "url": "depth_midas_min.csv"
+                },
+                "max": {
+                    "type": "float",
+                    "url": "depth_midas_max.csv"
+                }
+            }
+        },
+        "depth_marigold": {
+            "url": "depth_marigold.mp4",
+            "folder": "depth_marigold",
+            "values": {
+                "min": {
+                    "type": "float",
+                    "url": "depth_marigold_min.csv"
+                },
+                "max": {
+                    "type": "float",
+                    "url": "depth_marigold_max.csv"
+                }
+            }
+        },
+        "depth_zoedepth": {
+            "url": "depth_zoedepth.mp4",
+            "folder": "depth_zoedepth",
+            "values": {
+                "min": {
+                    "type": "float",
+                    "url": "depth_zoedepth_min.csv"
+                },
+                "max": {
+                    "type": "float",
+                    "url": "depth_zoedepth_max.csv"
+                }
+            }
+        },
+        "depth_patchfusion": {
+            "url": "depth_patchfusion.mp4",
+            "folder": "depth_patchfusion",
+            "values": {
+                "min": {
+                    "type": "float",
+                    "url": "depth_patchfusion_min.csv"
+                },
+                "max": {
+                    "type": "float",
+                    "url": "depth_patchfusion_max.csv"
+                }
+            }
+        },
+        "mask": {
+            "url": "mask.mp4",
+            "ids": [
+                "person",
+                "bird",
+                "cat",
+                "dog",
+                "horse",
+                "sheep",
+                "cow",
+                "elephant",
+                "bear",
+                "zebra",
+                "giraffe"
+            ]
+        },
+        "flow": {
+            "url": "flow.mp4",
+            "values": {
+                "dist": {
+                    "type": "float",
+                    "url": "flow.csv"
+                }
+            }
+        },
+        "camera_pose": {
+            "url": "camera_pose.mp4"
+        }
+    },
+    "width": 1280,
+    "height": 720,
+    "fps": 24.0,
+    "frames": 111,
+    "duration": 4.625,
+    "principal_point": [
+        1250.2950735320314,
+        640.0
+    ],
+    "focal_length": 1250.2950735320314,
+    "field_of_view": 28.71217555532455,
+    "model": "SIMPLE_PINHOLE"
+}
