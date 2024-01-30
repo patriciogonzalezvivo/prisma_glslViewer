@@ -1,2 +1,2 @@
-sources: ["rgba", "depth_zoedepth"]
+sources: ["rgba", "depth"]
 commands: ["pcl_plane,512"]

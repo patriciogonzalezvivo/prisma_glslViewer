@@ -18,7 +18,6 @@ uniform float       u_cameraDistance;
 uniform vec2        u_resolution;
 uniform float       u_time;
 
-
 attribute vec4      a_position;
 varying vec4        v_position;
 

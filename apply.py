@@ -14,6 +14,7 @@ if __name__ == '__main__':
     parser.add_argument('--height', help="height", default=None)
     parser.add_argument('--pixel', '-p', help="Pixel density", default='2')
     parser.add_argument('--prime', help="Use NV Prime", default=False, action='store_true')
+    parser.add_argument('--ncurses', help="Use ncurses interface", default=False, action='store_true')
     args = parser.parse_args()
 
     input_path = args.input
@@ -49,11 +50,31 @@ if __name__ == '__main__':
         pixel_density = 1.0
 
     cmd = shader.cmd(footage, pixel_density)
-    cmd += " --noncurses "
 
+    if not args.ncurses:
+        cmd += " --noncurses "
+
+    # Add metadata
     if "frames" in data:
-        frames = int(data["frames"]) 
-        cmd += " -e u_total_frames," + str(frames) + " "
+        cmd += " -e u_total_frames," + str( int(data["frames"]) ) + " "
+
+    if "duration" in data:
+        cmd += " -e u_duration," + str(data["duration"]) + " "
+
+    if "width" in data:
+        cmd += " -e u_width," + str(data["width"]) + " "
+
+    if "height" in data:
+        cmd += " -e u_height," + str(data["height"]) + " "
+
+    if "field_of_view" in data:
+        cmd += " -e u_fov," + str(data["field_of_view"]) + " "
+
+    if "focal_length" in data:
+        cmd += " -e u_focal_length," + str(data["focal_length"]) + " "
+    
+    if "principal_point" in data:
+        cmd += " -e u_principal_point," + str(data["principal_point"][0]) + "," + str(data["principal_point"][1]) + " "
     
     if len(args.output) > 0:
         cmd += ' --noncurses --headless '
@@ -78,15 +99,6 @@ if __name__ == '__main__':
 
         else:
             cmd += ' -E screenshot,' + args.output
-
-    # for i in range(3, len(sys.argv)):
-    #     if sys.argv[i].isdigit():
-    #         cmd += ' -p ' + sys.argv[i]
-    #     elif sys.argv[i][0] == '-':
-    #         cmd += ' ' + sys.argv[i]
-    #     else:
-    #         cmd += ' -e ' + sys.argv[i]
-    # cmd += " --noncurses "
 
     if args.prime:
         cmd = "prime-run " + cmd

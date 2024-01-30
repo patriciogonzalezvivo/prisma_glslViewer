@@ -3,62 +3,6 @@
         "rgba": {
             "url": "rgba.mp4"
         },
-        "depth_midas": {
-            "url": "depth_midas.mp4",
-            "folder": "depth_midas",
-            "values": {
-                "min": {
-                    "type": "float",
-                    "url": "depth_midas_min.csv"
-                },
-                "max": {
-                    "type": "float",
-                    "url": "depth_midas_max.csv"
-                }
-            }
-        },
-        "depth_marigold": {
-            "url": "depth_marigold.mp4",
-            "folder": "depth_marigold",
-            "values": {
-                "min": {
-                    "type": "float",
-                    "url": "depth_marigold_min.csv"
-                },
-                "max": {
-                    "type": "float",
-                    "url": "depth_marigold_max.csv"
-                }
-            }
-        },
-        "depth_zoedepth": {
-            "url": "depth_zoedepth.mp4",
-            "folder": "depth_zoedepth",
-            "values": {
-                "min": {
-                    "type": "float",
-                    "url": "depth_zoedepth_min.csv"
-                },
-                "max": {
-                    "type": "float",
-                    "url": "depth_zoedepth_max.csv"
-                }
-            }
-        },
-        "depth_patchfusion": {
-            "url": "depth_patchfusion.mp4",
-            "folder": "depth_patchfusion",
-            "values": {
-                "min": {
-                    "type": "float",
-                    "url": "depth_patchfusion_min.csv"
-                },
-                "max": {
-                    "type": "float",
-                    "url": "depth_patchfusion_max.csv"
-                }
-            }
-        },
         "mask": {
             "url": "mask.mp4",
             "ids": [
@@ -75,17 +19,112 @@
                 "giraffe"
             ]
         },
-        "flow": {
-            "url": "flow.mp4",
+        "depth_midas": {
+            "url": "depth_midas.mp4",
             "values": {
-                "dist": {
+                "min": {
                     "type": "float",
-                    "url": "flow.csv"
+                    "url": "depth_midas_min.csv"
+                },
+                "max": {
+                    "type": "float",
+                    "url": "depth_midas_max.csv"
                 }
             }
         },
-        "camera_pose": {
-            "url": "camera_pose.mp4"
+        "depth_marigold": {
+            "url": "depth_marigold.mp4",
+            "values": {
+                "min": {
+                    "type": "float",
+                    "url": "depth_marigold_min.csv"
+                },
+                "max": {
+                    "type": "float",
+                    "url": "depth_marigold_max.csv"
+                }
+            }
+        },
+        "depth_zoedepth": {
+            "url": "depth_zoedepth.mp4",
+            "folder": "depth",
+            "values": {
+                "min": {
+                    "type": "float",
+                    "url": "depth_zoedepth_min.csv"
+                },
+                "max": {
+                    "type": "float",
+                    "url": "depth_zoedepth_max.csv"
+                }
+            }
+        },
+        "depth_patchfusion": {
+            "url": "depth_patchfusion.mp4",
+            "values": {
+                "min": {
+                    "type": "float",
+                    "url": "depth_patchfusion_min.csv"
+                },
+                "max": {
+                    "type": "float",
+                    "url": "depth_patchfusion_max.csv"
+                }
+            }
+        },
+        "depth_anything": {
+            "url": "depth_anything.mp4",
+            "values": {
+                "min": {
+                    "type": "float",
+                    "url": "depth_anything_min.csv"
+                },
+                "max": {
+                    "type": "float",
+                    "url": "depth_anything_max.csv"
+                }
+            },
+            "folder": "depth_anything"
+        },
+        "depth": {
+            "url": "depth_zoedepth.mp4",
+            "values": {
+                "min": {
+                    "type": "float",
+                    "url": "depth_zoedepth_min.csv"
+                },
+                "max": {
+                    "type": "float",
+                    "url": "depth_zoedepth_max.csv"
+                }
+            }
+        },
+        "flow_gmflow": {
+            "url": "flow_gmflow.mp4",
+            "values": {
+                "dist": {
+                    "type": "float",
+                    "url": "flow_gmflow.csv"
+                }
+            }
+        },
+        "flow_raft": {
+            "url": "flow_raft.mp4",
+            "values": {
+                "dist": {
+                    "type": "float",
+                    "url": "flow_raft.csv"
+                }
+            }
+        },
+        "flow": {
+            "url": "flow_gmflow.mp4",
+            "values": {
+                "dist": {
+                    "type": "float",
+                    "url": "flow_gmflow.csv"
+                }
+            }
         }
     },
     "width": 1280,
@@ -94,10 +133,9 @@
     "frames": 111,
     "duration": 4.625,
     "principal_point": [
-        1250.2950735320314,
-        640.0
+        640.0,
+        360.0
     ],
-    "focal_length": 1250.2950735320314,
-    "field_of_view": 28.71217555532455,
-    "model": "SIMPLE_PINHOLE"
+    "focal_length": 960.0,
+    "field_of_view": 41.11209043916693
 }

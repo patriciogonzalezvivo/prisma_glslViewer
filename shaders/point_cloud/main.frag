@@ -4,15 +4,16 @@
 precision highp float;
 #endif
 
+
+uniform sampler2D   u_doubleBuffer0;
+
 uniform sampler2D   u_band_rgba;
 uniform vec2        u_band_rgbaResolution;
 
-uniform sampler2D   u_band_depth_zoedepth;
-uniform vec2        u_band_depth_zoedepthResolution;
-uniform float       u_band_depth_zoedepth_min;
-uniform float       u_band_depth_zoedepth_max;
-
-uniform sampler2D   u_doubleBuffer0;
+uniform sampler2D   u_band_depth;
+uniform vec2        u_band_depthResolution;
+uniform float       u_band_depth_min;
+uniform float       u_band_depth_max;
 
 uniform vec2        u_resolution;
 uniform float       u_time;
@@ -35,7 +36,6 @@ varying vec2        v_texcoord;
 
 #include "lygia/lighting/ray/direction.glsl"
 #include "lygia/lighting/ray/cast.glsl"
-#include "lygia/draw/stroke.glsl"
 
 void main() {
     vec4 color = vec4(0.0, 0.0, 0.0, 1.0);
@@ -44,12 +44,12 @@ void main() {
     vec2 uv = v_texcoord;
 
 #if defined(DOUBLE_BUFFER_0)
-    Ray ray = rayDirection(vec3(0.0, 0.0, 3.0), uv * 2.0 - 1.0, u_band_rgbaResolution, 45.0);
-    float depth = sampleHeatmap(u_band_depth_zoedepth, uv, u_band_depth_zoedepth_min, u_band_depth_zoedepth_max);
+    Ray ray = rayDirection(vec3(0.0, 0.0, 3.0), uv * 2.0 - 1.0, u_band_rgbaResolution, 45.);
+    float depth = sampleHeatmap(u_band_depth, uv, u_band_depth_min, u_band_depth_max);
     color.xyz = rayCast(ray, depth);
 
-    vec2 depth_pixel = 1.0/u_band_depth_zoedepthResolution;
-    color.a = 1.0-edge(u_band_depth_zoedepth, uv, depth_pixel * 5.0);
+    vec2 depth_pixel = 1.0/u_band_depthResolution;
+    color.a = 1.0-edge(u_band_depth, uv, depth_pixel * 5.0);
 
     vec4 prevColor = texture2D(u_doubleBuffer0, uv);
     color = mix(prevColor, color, 0.25);
