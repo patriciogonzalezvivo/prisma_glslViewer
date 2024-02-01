@@ -6,22 +6,23 @@ import yaml
 class GlslViewer(object):
     def __init__( self, path: str, ):
 
-        # folder containing the shaders and the manifest
-        self.folder = path
+        # path to the folder containing the shaders and the manifest
+        self.path = path
 
         # Open an past the manifest
-        self.manifest = yaml.load(open(join(self.folder, "manifest.yaml")).read(), Loader=yaml.FullLoader)
+        self.manifest = yaml.load(open(join(self.path, "manifest.yaml")).read(), Loader=yaml.FullLoader)
 
         # GlslViewer have different ways to load uniform values that uniform textures
         self.uniform_values: dict = {}
         self.uniform_textures: dict = {}
 
+        # Load the values and textures from the manifest
         if "values" in self.manifest:
-            self.load_values_from( self.manifest["values"] )
+            self.load_values( self.manifest["values"] )
 
-    def load_values_from(self, values: dict, pre: str = ""):
+    def load_values(self, values: dict, pre: str = ""):
         for v in values:
-            # if type is not specify try to guess it
+            # If the type is not defined, we try to guess it
             if not "type" in values[v]:
                 if v in self.uniform_textures:
                     values[pre + v]["type"] = "sampler2D"
@@ -30,9 +31,10 @@ class GlslViewer(object):
                 else:
                     raise Exception(f"Cannot identify value {pre + v} type")
 
+            # If the type is a texture, we load it as a texture
             if values[v]["type"] == "sampler2D":
                 self.load_texture(pre + v, values[v]["value"])
-                
+            
             else:
                 uniform: dict = deepcopy(values[v])
                 self.uniform_values[pre + v] = uniform
@@ -40,20 +42,24 @@ class GlslViewer(object):
 
     def load_texture(self, name: str, url: str):
         self.uniform_textures[name] = {}
-        self.uniform_textures[name]["url"] = join(self.folder, url)
+        self.uniform_textures[name]["url"] = join(self.path, url)
 
 
     def cmd(self, layer, pixel_density = 1.0):
         cmd = "glslViewer -l -Ishaders "
-        cmd += join(self.folder, "main.frag") + " "
-        if exists(abspath(join(self.folder, "main.vert"))):
-            cmd += join(self.folder, "main.vert") + " " 
-        if exists(abspath(join(self.folder, "geom.ply"))):
-            cmd += join(self.folder, "geom.ply")  + " "
-        elif exists(abspath(join(self.folder, "geom.glb"))):
-            cmd += join(self.folder, "geom.glb")  + " "
-        elif exists(abspath(join(self.folder, "geom.obj"))):
-            cmd += join(self.folder, "geom.obj")  + " "
+        cmd += join(self.path, "main.frag") + " "
+
+        # If there is a vertex file, we load it
+        if exists(abspath(join(self.path, "main.vert"))):
+            cmd += join(self.path, "main.vert") + " " 
+        
+        # If the is a geometry file, we load it
+        if exists(abspath(join(self.path, "geom.ply"))):
+            cmd += join(self.path, "geom.ply")  + " "
+        elif exists(abspath(join(self.path, "geom.glb"))):
+            cmd += join(self.path, "geom.glb")  + " "
+        elif exists(abspath(join(self.path, "geom.obj"))):
+            cmd += join(self.path, "geom.obj")  + " "
         cmd += " --fps " + str(layer.fps)
 
 
@@ -82,7 +88,7 @@ class GlslViewer(object):
                     cmd +=  " " + layer.bands[b]["url"]
 
                 if "values" in layer.bands[b]:
-                    self.load_values_from( layer.bands[b]["values"], pre="u_band_" + b + "_" )
+                    self.load_values( layer.bands[b]["values"], pre="u_band_" + b + "_" )
 
         if len(self.uniform_textures) > 0:
             cmd += " --vFlip"
