@@ -16,6 +16,9 @@ class GlslViewer(object):
         self.uniform_values: dict = {}
         self.uniform_textures: dict = {}
 
+        if "values" in self.manifest:
+            self.load_values_from( self.manifest["values"] )
+
     def load_values_from(self, values: dict, pre: str = ""):
         for v in values:
             # if type is not specify try to guess it
