@@ -7,8 +7,8 @@ from common.footage import Footage
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input', '-i', help="Input folder. Ex: `/footage/000`", type=str, required=True)
-    parser.add_argument('--shader', '-s', help="Shader folder. Ex: 'shaders/pcl_patch'", type=str, required=True)
+    parser.add_argument('--input', '-i', help="Input folder. Example `/footage/000`", type=str, required=True)
+    parser.add_argument('--shader', '-s', help="Shader folder. Example 'shaders/pcl_patch'", type=str, required=True)
     parser.add_argument('--output', help="folder name", type=str, default='')
     parser.add_argument('--width', '-w', help="width", default=None)
     parser.add_argument('--height', help="height", default=None)

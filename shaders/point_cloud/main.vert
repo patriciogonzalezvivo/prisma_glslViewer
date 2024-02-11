@@ -37,7 +37,7 @@ void main(void) {
     vec4 data = sampleNearest(u_doubleBuffer0, uv, u_resolution);
 
     v_position.xyz = data.xyz;
-    gl_PointSize = 1.0;
+    gl_PointSize = 3.0;
     gl_PointSize *= data.w;
     
     gl_Position = u_projectionMatrix * u_viewMatrix * v_position;
